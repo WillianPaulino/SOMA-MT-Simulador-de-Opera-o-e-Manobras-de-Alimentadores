@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Unifilar – W0321P3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/modern-normalize/modern-normalize.css">
+  <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+  <style>
+    body{margin:0;background:#0b0f17;color:#e5e7eb;font:14px/1.4 system-ui,Segoe UI,Roboto,Arial}
+    header{display:flex;gap:16px;align-items:center;padding:10px 16px;border-bottom:1px solid #111827;background:#0f172a}
+    header h1{font-size:16px;margin:0;color:#fff}
+    .toolbar{display:flex;gap:8px;align-items:center}
+    select,button{border:1px solid #374151;background:#111827;color:#e5e7eb;border-radius:6px;padding:6px 8px}
+    button{cursor:pointer}
+    .wrap{display:grid;grid-template-columns:320px 1fr;height:calc(100vh - 48px)}
+    .side{padding:12px;border-right:1px solid #111827;overflow:auto}
+    .side h3{margin:8px 0 6px;color:#fff}
+    .log{height:200px;overflow:auto;background:#0f172a;padding:8px;border-radius:6px;border:1px solid #1f2937}
+    .legend{display:flex;gap:8px;align-items:center;margin:6px 0 10px}
+    .legend span{display:inline-block;width:18px;height:3px;border-radius:2px}
+    .line-energ{background:#00e676}.line-open{background:#ff5163}.line-off{background:#6b7280}
+    svg{background:#000;width:100%;height:100%}
+    .sw{fill:#0b0f17;stroke:#9ca3af;stroke-width:2;cursor:pointer}
+    .sw.open{stroke:#ff5163}.sw.closed{stroke:#00e676}
+    .lbl{fill:#9ca3af;font-size:10px;text-anchor:middle}
+
+    /* Modal */
+    .overlay{position:fixed;inset:0;background:#0008;opacity:0;pointer-events:none;transition:.15s}
+    .modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.98);
+      background:#0f172a;border:1px solid #1f2937;border-radius:10px;min-width:360px;max-width:92vw;
+      padding:14px;box-shadow:0 10px 30px #000}
+    .hidden{display:none}
+    .modal h3{margin:0 0 8px 0}
+    .status{color:#9ca3af;margin-bottom:10px;font-size:13px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .actions button[disabled]{opacity:.5;cursor:not-allowed}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Unifilar – Alimentador W0321P3</h1>
+    <div class="toolbar">
+      <button id="btnReset">Resetar</button>
+      <span style="color:#9ca3af">Mover/zoom: arraste o diagrama ou use o mouse wheel</span>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <aside class="side">
+      <h3>Manobras</h3>
+      <label>Linha/Chave</label>
+      <select id="selLine"></select>
+      <div style="display:flex;gap:8px;margin-top:6px;">
+        <button id="btnOpen">Abrir</button>
+        <button id="btnClose">Fechar</button>
+      </div>
+
+      <h3 style="margin-top:14px;">Defeitos</h3>
+      <label>Trecho</label>
+      <select id="selFault"></select>
+      <div style="display:flex;gap:8px;margin-top:6px;">
+        <button id="btnApplyFault">Aplicar defeito</button>
+        <button id="btnClearFault">Limpar defeito</button>
+      </div>
+
+      <h3 style="margin-top:14px;">Legenda</h3>
+      <div class="legend"><span class="line-energ"></span> Energizada</div>
+      <div class="legend"><span class="line-off"></span> Desenergizada</div>
+      <div class="legend"><span class="line-open"></span> Aberta / Defeito</div>
+
+      <h3 style="margin-top:14px;">Log</h3>
+      <div class="log" id="log"></div>
+    </aside>
+
+    <main>
+      <svg id="view" viewBox="0 0 1600 900"></svg>
+    </main>
+  </div>
+
+  <!-- Modal de ações -->
+  <div id="overlay" class="overlay hidden"></div>
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modTitle">
+    <h3 id="modTitle">Ações</h3>
+    <div id="modStatus" class="status">—</div>
+    <div class="actions">
+      <button id="mOpen">Abrir</button>
+      <button id="mClose">Fechar</button>
+      <button id="mFault">Aplicar defeito</button>
+      <button id="mClear">Limpar defeito</button>
+      <button id="mCancel">Fechar</button>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
