@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  backend:
+    build: ./backend
+    container_name: w0321p3-backend
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./frontend/templates:/app/../../frontend/templates:ro
+      - ./frontend/static:/app/../../frontend/static:ro
